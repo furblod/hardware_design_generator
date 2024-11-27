@@ -1,29 +1,29 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
+# from transformers import AutoModelForCausalLM, AutoTokenizer
 
-# Model ve tokenizer yükle
-model_name = "codellama/CodeLlama-7b-hf"  # Hugging Face üzerinde ücretsiz bir model
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForCausalLM.from_pretrained(model_name)
+# # Model ve tokenizer yükle
+# model_name = "codellama/CodeLlama-7b-hf"  # Hugging Face üzerinde ücretsiz bir model
+# tokenizer = AutoTokenizer.from_pretrained(model_name)
+# model = AutoModelForCausalLM.from_pretrained(model_name)
 
-def generate_verilog(prompt, max_length=200):
-    # Prompt'u tokenlara çevir
-    inputs = tokenizer(prompt, return_tensors="pt")
-    # Model ile yanıt üret
-    outputs = model.generate(
-        inputs["input_ids"], 
-        max_length=max_length, 
-        temperature=0.7, 
-        top_p=0.95, 
-        do_sample=True
-    )
-    # Yanıtı çöz ve döndür
-    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+# def generate_verilog(prompt, max_length=200):
+#     # Prompt'u tokenlara çevir
+#     inputs = tokenizer(prompt, return_tensors="pt")
+#     # Model ile yanıt üret
+#     outputs = model.generate(
+#         inputs["input_ids"], 
+#         max_length=max_length, 
+#         temperature=0.7, 
+#         top_p=0.95, 
+#         do_sample=True
+#     )
+#     # Yanıtı çöz ve döndür
+#     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
-if __name__ == "__main__":
-    # Verilog kodu üretmek için prompt
-    prompt = "Create a Verilog module for a 4-bit binary counter with enable and reset."
-    verilog_code = generate_verilog(prompt)
-    print("Generated Verilog Code:\n", verilog_code)
+# if __name__ == "__main__":
+#     # Verilog kodu üretmek için prompt
+#     prompt = "Create a Verilog module for a 4-bit binary counter with enable and reset."
+#     verilog_code = generate_verilog(prompt)
+#     print("Generated Verilog Code:\n", verilog_code)
 
 verilog_code = """
 module counter (
@@ -41,7 +41,11 @@ module counter (
 endmodule
 """
 
-# Üretilen Verilog kodunu dosyaya yaz
-with open("generated_module.v", "w") as file:
-    file.write(verilog_code)
-print("generated_module.v dosyası oluşturuldu.")
+try:
+    # Verilog kodunu dosyaya yaz
+    with open("generated_module.v", "w") as file:
+        file.write(verilog_code)
+    print("generated_module.v dosyası başarıyla oluşturuldu.")
+except Exception as e:
+    print("Dosya oluşturulurken bir hata oluştu:", e)
+

@@ -1,0 +1,90 @@
+$date
+	Wed Nov 27 19:50:46 2024
+$end
+$version
+	Icarus Verilog
+$end
+$timescale
+	1s
+$end
+$scope module testbench $end
+$var wire 4 ! count [3:0] $end
+$var reg 1 " clk $end
+$var reg 1 # enable $end
+$var reg 1 $ reset $end
+$scope module uut $end
+$var wire 1 " clk $end
+$var wire 1 # enable $end
+$var wire 1 $ reset $end
+$var reg 4 % count [3:0] $end
+$upscope $end
+$upscope $end
+$enddefinitions $end
+$comment Show the parameter values. $end
+$dumpall
+$end
+#0
+$dumpvars
+b0 %
+1$
+0#
+0"
+b0 !
+$end
+#5
+1"
+#10
+0"
+1#
+0$
+#15
+b1 !
+b1 %
+1"
+#20
+0"
+#25
+b10 !
+b10 %
+1"
+#30
+0"
+#35
+b11 !
+b11 %
+1"
+#40
+0"
+#45
+b100 !
+b100 %
+1"
+#50
+0"
+#55
+b101 !
+b101 %
+1"
+#60
+0"
+0#
+#65
+1"
+#70
+0"
+#75
+1"
+#80
+0"
+#85
+1"
+#90
+0"
+#95
+1"
+#100
+0"
+#105
+1"
+#110
+0"
