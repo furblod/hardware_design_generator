@@ -1,4 +1,3 @@
-
 module counter (
     input clk,
     input reset,
