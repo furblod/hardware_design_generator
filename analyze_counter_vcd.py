@@ -9,7 +9,6 @@ def parse_counter_vcd(filename):
         with open(filename, 'r') as file:
             lines = file.readlines()
             
-            # Header parsing
             for line in lines:
                 if '$var' in line:
                     parts = line.split()
@@ -30,7 +29,6 @@ def parse_counter_vcd(filename):
             print(f"{'Time':<10}{'Signal':<10}{'Decimal':<10}{'Binary'}")
             print("-" * 40)
 
-            # Data parsing
             for line in lines:
                 line = line.strip()
                 
@@ -62,11 +60,9 @@ def parse_counter_vcd(filename):
                             signal_name = signal_names[signal_char]
                             value = line[0]
                             
-                            # Count dışındaki sinyaller için
                             if signal_name != 'count':
                                 print(f"{current_time:<10}{signal_name:<10}{value:<10}-")
                             elif last_count_value:
-                                # Önceki count değerini kullan
                                 decimal_value = int(last_count_value, 2)
                                 print(f"{current_time:<10}{signal_name:<10}{decimal_value:<10}{last_count_value}")
 
@@ -86,8 +82,8 @@ def parse_vcd(file_path):
     """
     VCD dosyasını satır satır okur ve analiz eder.
     """
-    signals = {}  # Sinyal tanımları (ID -> İsim)
-    signal_changes = {}  # Zaman içerisindeki sinyal değişimleri (ID -> [(zaman, değer)])
+    signals = {}  
+    signal_changes = {}  
     
     # VCD dosyasını aç ve satır satır işle
     with open(file_path, 'r') as file:

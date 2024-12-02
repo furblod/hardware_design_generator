@@ -1,4 +1,3 @@
-
 def parse_mux_vcd(filename):
     signals = {
         'a': {'value': '0', 'changes': {}},
@@ -18,7 +17,6 @@ def parse_mux_vcd(filename):
         with open(filename, 'r') as file:
             lines = file.readlines()
 
-            # Signal mapping
             for line in lines:
                 if '$var' in line:
                     parts = line.split()
@@ -43,12 +41,10 @@ def parse_mux_vcd(filename):
             for line in lines:
                 line = line.strip()
                 
-                # Time information
                 if line.startswith('#'):
                     current_time = int(line[1:])
                     continue
 
-                # Signal changes
                 if len(line) >= 2 and line[0] in ['0', '1']:
                     signal_char = line[1]
                     value = line[0]
@@ -58,7 +54,6 @@ def parse_mux_vcd(filename):
                         signals[signal_name]['changes'][current_time] = value
                         signals[signal_name]['value'] = value
 
-            # Process unique time points
             unique_times = sorted(set().union(
                 signals['a']['changes'].keys(),
                 signals['b']['changes'].keys(),
@@ -66,12 +61,10 @@ def parse_mux_vcd(filename):
             ))
 
             for time in unique_times:
-                # Update signals at this time
                 for sig in ['a', 'b', 'sel']:
                     if time in signals[sig]['changes']:
                         signals[sig]['value'] = signals[sig]['changes'][time]
                 
-                # Calculate y
                 y_value = calculate_y(
                     signals['a']['value'], 
                     signals['b']['value'], 
@@ -157,95 +150,46 @@ def plot_signals(signal_changes, signals, output_image):
     plt.show()
 
 
-def parse_vcd(file_path):
-    """
-    VCD dosyasını satır satır okur ve analiz eder.
-    """
-    signals = {}  # Sinyal tanımları (ID -> İsim)
-    signal_changes = {}  # Zaman içerisindeki sinyal değişimleri (ID -> [(zaman, değer)])
-    current_time = 0  # Mevcut zaman
-
-    # VCD dosyasını aç ve satır satır işle
-    with open(file_path, 'r') as file:
-        for line in file:
-            line = line.strip()
-            # Sinyal tanımlamaları ($var ile başlayan)
-            if line.startswith("$var"):
-                parts = line.split()
-                signal_id = parts[3]
-                signal_name = parts[4].rstrip('$end')
-                signals[signal_id] = signal_name
-                signal_changes[signal_id] = []
-            # Zaman bilgisini oku (# ile başlayan)
-            elif line.startswith("#"):
-                try:
-                    current_time = int(line[1:])
-                except ValueError:
-                    current_time = 0  # Geçersiz bir zaman varsa 0 olarak kabul et
-            # Sinyal değişimleri (0, 1, b ile başlayan)
-            elif line.startswith(('0', '1', 'b')):
-                value = line[0]
-                signal_id = line[1:].strip()
-                if line.startswith('b'):
-                    # Eksik binary değeri kontrol et
-                    parts = line.split()
-                    if len(parts) == 2:
-                        value = parts[0]
-                        signal_id = parts[1]
-                    else:
-                        continue  # Eksik binary değeri atla
-                if signal_id in signal_changes:
-                    signal_changes[signal_id].append((current_time, value))
-
-    return signals, signal_changes
-
-
 # Komut satırından dosya adını al
 if len(sys.argv) < 2:
     print("Usage: python analyze_counter_vcd.py <counter_vcd_file>")
     sys.exit(1)
 
-vcd_file = sys.argv[1]  # VCD dosya adı
-signals, signal_changes = parse_vcd(vcd_file)
-
 
 def parse_vcd(file_path):
     """
     VCD dosyasını satır satır okur ve analiz eder.
     """
-    signals = {}  # Sinyal tanımları (ID -> İsim)
-    signal_changes = {}  # Zaman içerisindeki sinyal değişimleri (ID -> [(zaman, değer)])
-    current_time = 0  # Mevcut zaman
+    signals = {}  
+    signal_changes = {}  
+    current_time = 0  
 
     # VCD dosyasını aç ve satır satır işle
     with open(file_path, 'r') as file:
         for line in file:
             line = line.strip()
-            # Sinyal tanımlamaları ($var ile başlayan)
             if line.startswith("$var"):
                 parts = line.split()
                 signal_id = parts[3]
                 signal_name = parts[4].rstrip('$end')
                 signals[signal_id] = signal_name
                 signal_changes[signal_id] = []
-            # Zaman bilgisini oku (# ile başlayan)
             elif line.startswith("#"):
                 try:
                     current_time = int(line[1:])
                 except ValueError:
-                    current_time = 0  # Geçersiz bir zaman varsa 0 olarak kabul et
+                    current_time = 0  
             # Sinyal değişimleri (0, 1, b ile başlayan)
             elif line.startswith(('0', '1', 'b')):
                 value = line[0]
                 signal_id = line[1:].strip()
                 if line.startswith('b'):
-                    # Eksik binary değeri kontrol et
                     parts = line.split()
                     if len(parts) == 2:
                         value = parts[0]
                         signal_id = parts[1]
                     else:
-                        continue  # Eksik binary değeri atla
+                        continue  
                 if signal_id in signal_changes:
                     signal_changes[signal_id].append((current_time, value))
 
@@ -254,7 +198,6 @@ def parse_vcd(file_path):
 vcd_file = sys.argv[1]  # VCD dosya adı
 signals, signal_changes = parse_vcd(vcd_file)
 
-# Mevcut analiz kodunuzun ardından bu kısmı ekleyin
 save_to_csv(signal_changes, signals, "mux_vcd_analysis.csv")
 plot_signals(signal_changes, signals, "mux_vcd_signals.png")
 
