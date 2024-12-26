@@ -1,4 +1,4 @@
-module decoder_4to16(
+module decoder (
     input wire [3:0] in,    // 4-bit giriş
     input wire enable,      // Enable sinyali
     output reg [15:0] out   // 16-bit çıkış

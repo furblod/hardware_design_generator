@@ -1,4 +1,4 @@
-module alu (
+module ALU (
     input [31:0] a,       // 32-bit giriş 1
     input [31:0] b,       // 32-bit giriş 2
     input [1:0] opcode,   // İşlem kodu (00: +, 01: -, 10: *, 11: /)
